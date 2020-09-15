@@ -10,12 +10,10 @@ fun main() {
     pele.experiencia = 30
     pele.gols = 1000
 
-    val treinoFinalizacao = SessaoDeTreinamento()
-
-    treinoFinalizacao.experiencia = 1
+    val treinoFinalizacao = SessaoDeTreinamento(10)
 
     treinoFinalizacao.treinarA(mane)
 
     treinoFinalizacao.treinarA(pele)
-    
+
 }
