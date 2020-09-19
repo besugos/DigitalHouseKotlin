@@ -1,4 +1,4 @@
-abstract class ContaBancaria (val numeroConta: Int, protected var saldo: Double): Imprimivel{
+abstract class ContaBancaria (val numeroConta: Int, var saldo: Double?): Imprimivel{
 
     abstract fun sacar(valor: Double): Boolean
 

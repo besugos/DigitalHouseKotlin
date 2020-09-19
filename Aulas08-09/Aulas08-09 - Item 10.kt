@@ -1,3 +1,5 @@
+import kotlin.system.exitProcess
+
 fun main() {
 
     var banco = Banco()
@@ -5,40 +7,42 @@ fun main() {
     menu(banco)
 }
 
-    fun menu(banco: Banco){
-        var opcao: Int = 0
-        while (true) {
-            println("-----------------------")
-            println("1 - Criar conta")
-            println("2 - Selecionar conta")
-            println("3 - Remover conta")
-            println("4 - Gerar relatório")
-            println("5 - Finalizar")
-            println()
-            print("Entre a opção desejada: ")
-            opcao = readLine()!!.toInt()
+fun menu(banco: Banco) {
+    var opcao: Int = 0
+        println()
+        println("-----------------------")
+        println("MENU PRINCIPAL")
+        println("-----------------------")
+        println("1 - Criar conta")
+        println("2 - Selecionar conta")
+        println("3 - Remover conta")
+        println("4 - Gerar relatório")
+        println("5 - Finalizar")
+        println()
+        print("Entre a opção desejada: ")
+        opcao = readLine()!!.toInt()
 
-            when (opcao) {
-                1 -> criarConta(banco)
-                2 -> selecionarConta(banco)
-                3 -> removerConta(banco)
-                4 -> gerarRelatorio(banco)
-                5 -> break
-                else -> {
-                    println("Opção Inválida")
-                    continue
-                }
+        when (opcao) {
+            1 -> criarConta(banco)
+            2 -> selecionarConta(banco)
+            3 -> removerConta(banco)
+            4 -> gerarRelatorio(banco)
+            5 -> exitProcess(0)
+            else -> {
+                println("Opção Inválida")
+                menu(banco)
             }
         }
-
     }
+
+
 
 
 fun criarConta(banco: Banco) {
     println()
     while (true) {
         print("Conta Corrente ou Poupança? (C/P) ")
-        var opcao: String = readLine()!!.toString().toUpperCase()
+        val opcao: String = readLine()!!.toString().toUpperCase()
         when (opcao) {
             "C" -> criarContaCorrente(banco)
             "P" -> criarContaPoupanca(banco)
@@ -72,95 +76,72 @@ fun selecionarConta(banco: Banco) {
 }
 
 fun removerConta(banco: Banco) {
-    while (true) {
+
         println()
         print("Informe o numero da conta: ")
-        val numeroConta = readLine()!!.toInt()
-        for (i in 0..banco.listaContas.size) {
-            if (banco.listaContas[i].numeroConta == numeroConta) {
-                banco.listaContas.removeAt(i)
-                println("Conta removida com sucesso")
-            } else {
+        val numConta = readLine()!!.toInt()
+        if (banco.listaContas.size > 0) {
+            for (listaConta in banco.listaContas) {
+                if (listaConta.numeroConta == numConta) {
+                    var j = banco.listaContas.indexOf(listaConta)
+                    banco.listaContas.removeAt(j)
+                    break
+                }
+            }
+
+        } else {
                 println("Conta Inexistente")
-                continue
+                removerConta(banco)
             }
         }
 
-    }
-}
+
+
 
 fun gerarRelatorio(banco: Banco) {
     banco.mostrarDados()
 }
 
-
 fun criarContaPoupanca(banco: Banco) {
     println()
-    while (true) {
-        print("Entre o numero da conta: ")
-        val numero = readLine()!!.toInt()
-        if (banco.listaContas.size > 0) {
-            for (i in 0..(banco.listaContas.size)) {
-                if (banco.listaContas[i].numeroConta == numero) {
-                    println("Conta já existente")
-                    println()
-                    continue
-                } else {
-                    print("Entre o saldo: ")
-                    val saldo = readLine()!!.toDouble()
-                    print("Entre o limite: ")
-                    val limite = readLine()!!.toDouble()
-                    var novaConta = ContaCorrente(numero, saldo, limite)
-                    banco.listaContas.add(novaConta)
-                    println("Conta criada com sucesso!")
-                }
+    print("Entre o numero da conta: ")
+    val numConta = readLine()!!.toInt()
+    if (banco.listaContas.size > 0) {
+        for (listaConta in banco.listaContas) {
+            if (listaConta.numeroConta == numConta) {
+                criarContaPoupanca(banco)
             }
-
-        } else {
-            print("Entre o saldo: ")
-            val saldo = readLine()!!.toDouble()
-            print("Entre o limite: ")
-            val limite = readLine()!!.toDouble()
-            val novaConta = ContaCorrente(numero, saldo, limite)
-            banco.listaContas.add(novaConta)
-            println("Conta criada com sucesso!")
         }
     }
+    print("Entre o saldo: ")
+    val saldo = readLine()!!.toDouble()
+    print("Entre o limite: ")
+    val limite = readLine()!!.toDouble()
+    val novaConta = ContaCorrente(numConta, saldo, limite)
+    banco.listaContas.add(novaConta)
+    println("Conta criada com sucesso!")
+    menu(banco)
 }
-
 
 fun criarContaCorrente(banco: Banco) {
     println()
-    while (true) {
-        print("Entre o numero da conta: ")
-        val numero = readLine()!!.toInt()
-        if (banco.listaContas.size > 0) {
-            for (i in 0..(banco.listaContas.size)) {
-                if (banco.listaContas[i].numeroConta == numero) {
-                    println("Conta já existente")
-                    println()
-                    continue
-                } else {
-                    print("Entre o saldo: ")
-                    val saldo = readLine()!!.toDouble()
-                    print("Entre a taxa de operação: ")
-                    val taxa = readLine()!!.toDouble()
-                    var novaConta = ContaCorrente(numero, saldo, taxa)
-                    banco.listaContas.add(novaConta)
-                    println("Conta criada com sucesso!")
-                }
+    print("Entre o numero da conta: ")
+    val numConta = readLine()!!.toInt()
+    if (banco.listaContas.size > 0) {
+        for (listaConta in banco.listaContas) {
+            if (listaConta.numeroConta == numConta) {
+                criarContaCorrente(banco)
             }
-
-        } else {
-            print("Entre o saldo: ")
-            val saldo = readLine()!!.toDouble()
-            print("Entre a taxa de operação: ")
-            val taxa = readLine()!!.toDouble()
-            val novaConta = ContaCorrente(numero, saldo, taxa)
-            banco.listaContas.add(novaConta)
-            println("Conta criada com sucesso!")
         }
     }
+    print("Entre o saldo: ")
+    val saldo = readLine()!!.toDouble()
+    print("Entre a taxa de operação: ")
+    val taxa = readLine()!!.toDouble()
+    val novaConta = ContaCorrente(numConta, saldo, taxa)
+    banco.listaContas.add(novaConta)
+    println("Conta criada com sucesso!")
+    menu(banco)
 }
 
 
@@ -194,37 +175,40 @@ fun menu2(conta: ContaBancaria, banco: Banco) {
 
 fun depositar(conta: ContaBancaria) {
     println()
-    println("Entre o valor a depositar: ")
+    print("Entre o valor a depositar: ")
     val valor = readLine()!!.toDouble()
     conta.depositar(valor)
 }
 
 fun sacar(conta: ContaBancaria) {
     println()
-    println("Entre o valor a sacar: ")
+    print("Entre o valor a sacar: ")
     val valor = readLine()!!.toDouble()
     conta.sacar(valor)
 }
 
 fun transferir(conta: ContaBancaria, banco: Banco) {
-    while (true) {
+
         println()
-        println("Entre o numero da conta de destino: ")
+        print("Entre o numero da conta de destino: ")
         val numero = readLine()!!.toInt()
-        for (i in 0..(banco.listaContas.size)) {
-            if (banco.listaContas[i].numeroConta == numero) {
-                println("Entre o valor a depositar: ")
-                var valor = readLine()!!.toDouble()
-                conta.transferir(valor, banco.listaContas[i])
-                println("Transferencia realizada com sucesso")
-                break
+        if (banco.listaContas.size > 0) {
+            for (listaConta in banco.listaContas) {
+                if (listaConta.numeroConta == numero) {
+                    print("Entre o valor a depositar: ")
+                    var valor = readLine()!!.toDouble()
+                    var j = banco.listaContas.indexOf(listaConta)
+                    conta.transferir(valor, banco.listaContas[j])
+                    println("Transferencia realizada com sucesso")
+                    menu2(conta, banco)
+                }
             }
+            print("Conta inexistente")
+            transferir(conta, banco)
         }
-        print ("Conta inexistente")
-        continue
+
     }
 
-}
 
 fun gerarRelatorioConta(conta: ContaBancaria) {
     conta.mostrarDados()

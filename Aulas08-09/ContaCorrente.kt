@@ -1,10 +1,15 @@
-class ContaCorrente (numeroConta: Int, saldo: Double, private var taxaDeOperacao: Double): ContaBancaria(numeroConta, saldo) {
+import kotlin.math.max
+
+class ContaCorrente (numeroConta: Int, saldo: Double,
+                     internal var taxaDeOperacao: Double): ContaBancaria(numeroConta, saldo) {
+
+
 
     override fun sacar(valor: Double): Boolean {
 
 
-        if (saldo >= (valor + taxaDeOperacao)) {
-            saldo = saldo - (valor + taxaDeOperacao)
+        if (saldo!! >= (valor + taxaDeOperacao)) {
+            saldo = saldo!! - (valor + taxaDeOperacao)
             return true
         } else {
             println("Saldo Insuficiente")
@@ -17,9 +22,9 @@ class ContaCorrente (numeroConta: Int, saldo: Double, private var taxaDeOperacao
     override fun depositar(valor: Double): Boolean {
 
 
-        if (this.saldo + valor >= taxaDeOperacao) {
-            this.saldo = this.saldo - taxaDeOperacao
-            this.saldo = this.saldo + valor
+        if (this.saldo!! + valor >= taxaDeOperacao!!) {
+            this.saldo = this.saldo!! - taxaDeOperacao!!
+            this.saldo = this.saldo!! + valor
             return true
         } else {
             println("Saldo Insuficiente")
